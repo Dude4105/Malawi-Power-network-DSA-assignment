@@ -139,6 +139,26 @@ void printAdjacencyMatrix() {
     cout << "\n";
 }
 
+// Print the shortest path and resistance from one source node to ALL other nodes.
+void printAllPaths(int source) {
+    vector<int> dist, prev;
+    dijkstra(source - 1, dist, prev);
+
+    cout << "Shortest (lowest-resistance) paths from node " << source << "\n";
+    cout << left << setw(6) << "Node" << setw(12) << "Resistance" << "Path\n";
+    cout << string(50, '-') << "\n";
+
+    for (int v = 0; v < V; v++) {
+        cout << left << setw(6) << v + 1;
+        if (dist[v] == INF) {
+            cout << setw(12) << "INF" << "unreachable\n";
+        } else {
+            cout << setw(12) << dist[v] << buildPath(v, prev) << "\n";
+        }
+    }
+    cout << "\n";
+}
+
 // Read an integer node number from the user (1..V). Returns false on bad input/EOF.
 bool readNode(const string& prompt, int& node) {
     cout << prompt;
@@ -149,6 +169,9 @@ bool readNode(const string& prompt, int& node) {
 int main() {
     buildGraph();
     printAdjacencyMatrix();
+
+    // Default output: shortest paths from node 1 to every node
+    printAllPaths(1);
 
     cout << "Malawi Power Network - lowest-resistance route finder\n";
     cout << "Nodes are numbered 1 to " << V << ". Enter 0 as the starting node to quit.\n\n";
